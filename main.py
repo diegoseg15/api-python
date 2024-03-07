@@ -25,5 +25,10 @@ def update_user(user_id):
     data = request.get_json()
     return jsonify({'message': 'User updated successfully', 'user_id': user_id}), 200
 
+@app.route("/users/<user_id>", methods=['DELETE'])
+def delete_user(user_id):
+    return jsonify({'message': 'User deleted successfully', 'user_id': user_id}), 200
+
+
 if __name__ == '__main__':
     app.run(debug=True)
