@@ -1,15 +1,17 @@
-from flask import Flask, jsonify, request
+# routes.py
 
-# Crear una instancia de la aplicación Flask
-app = Flask(__name__)
+from flask import Blueprint, jsonify, request
 
-# Ruta raíz de la API
-@app.route('/')
-def root():
-    return "Hola mundo"  # Devuelve un mensaje simple cuando se accede a la ruta raíz
+# Crear un Blueprint para las rutas relacionadas con los usuarios
+user_routes = Blueprint('user_routes', __name__)
+
+# Ruta para la página de inicio
+@user_routes.route("/")
+def home():
+    return "¡Bienvenido a la página de inicio!"
 
 # Ruta para obtener información de un usuario específico
-@app.route("/users/<user_id>")
+@user_routes.route("/users/<user_id>")
 def get_user(user_id):
     # Datos ficticios del usuario
     user = {'id': user_id, 'name': 'test', 'telefono': '0987654321'}
@@ -23,7 +25,7 @@ def get_user(user_id):
     return jsonify(user), 200
 
 # Ruta para crear un nuevo usuario
-@app.route("/users", methods=['POST'])
+@user_routes.route("/users", methods=['POST'])
 def create_user():
     # Obtener los datos enviados en la solicitud POST
     data = request.get_json()
@@ -33,7 +35,7 @@ def create_user():
     return jsonify(data), 201
 
 # Ruta para actualizar información de un usuario específico (PUT)
-@app.route("/users/<user_id>", methods=['PUT'])
+@user_routes.route("/users/<user_id>", methods=['PUT'])
 def update_user(user_id):
     # Obtener los datos enviados en la solicitud PUT
     data = request.get_json()
@@ -44,12 +46,8 @@ def update_user(user_id):
     return jsonify({'message': 'User updated successfully', 'user_id': user_id}), 200
 
 # Ruta para eliminar un usuario específico (DELETE)
-@app.route("/users/<user_id>", methods=['DELETE'])
+@user_routes.route("/users/<user_id>", methods=['DELETE'])
 def delete_user(user_id):
     # Aquí puedes implementar la lógica para eliminar el usuario con el ID proporcionado de tu sistema
     # Por ahora, solo se devolverá un mensaje de éxito
     return jsonify({'message': 'User deleted successfully', 'user_id': user_id}), 200
-
-# Entrada principal del programa
-if __name__ == '__main__':
-    app.run(debug=True)  # Iniciar la aplicación Flask en modo de depuración
